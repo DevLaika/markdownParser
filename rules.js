@@ -14,17 +14,25 @@ export default [
         index: 1
     },
     {
-        regex: /^((?: {2})*)([*+-]) (.*)/gm,
+        regex: /(?:^(?: {2})*\d+\. .*\n?)+/gm,
         assign: (match) => {
             return {
-                type: 'unordered-list',
-                indentation: match[1].length,
-                prefix: match[2],
-                content: match[3]
+                type: 'ordered-list',
+                content: match[0]
             }
         },
         template: (entry) => {
-            return `<li>${entry.content}</li>`
+            entry.content = entry.content.replace(/^\d+\. /gm, '<li>')
+            entry.content = entry.content.replace(/\n<li>/gm, '</li><li>')
+            entry.content = entry.content.replace(/\n$/g, '</li>')
+
+            // while (entry.content.match(/^(?: {2})+/gm)) {
+            //     let newNested = entry.content.match(/(?:^>+ .*\n?)+/gm)[0]
+            //     newNested = newNested.replace(/^> /gm, '')
+            //     newNested = `<blockquote>${newNested}</blockquote>`
+            //     entry.content = entry.content.replace(/(?:^>+ .*\n?)+/gm, newNested)
+            // }
+            return `<ol>${entry.content}</ol>`
         },
         index: 0
     },
@@ -32,19 +40,19 @@ export default [
         regex: /(?:^>+ .*\n?)+/gm,
         assign: (match) => {
             return {
-                type: 'quote-block',
+                type: 'blockquote',
                 content: match[0],
             }
         },
         template: (entry) => {
-            
-            while (entry.content.match(/^> /gm)) {
-                entry.content = entry.content.replace(/^> /gm, '')
+            while (entry.content.match(/^> /m)) {
+                let newNested = entry.content.match(/(?:^>+ .*\n?)+/m)[0]
+                newNested = newNested.replace(/^> /gm, '')
+                newNested = `<blockquote>${newNested}</blockquote>`
+                entry.content = entry.content.replace(/(?:^>+ .*\n?)+/m, newNested)
             }
-            
-            entry.content.replace(/\n$/g, '')
-
-            return `<blockquote>${entry.content}</blockquote>`
+            entry.content = entry.content.replace(/\n/g, '<br>')
+            return entry.content
         },
         index: 2
     }

@@ -6,7 +6,7 @@ export default class Rule {
         this.index = index
     }
 
-    getAssignedMatches(content) {
+    getAssigned(content) {
         let assigned = []
         const matches = [...content.matchAll(this.regex)]
         matches.forEach(match => {
@@ -20,7 +20,7 @@ export default class Rule {
     }
 
     getAssignedMarkups(content) {
-        const assigned = this.getAssignedMatches(content)
+        const assigned = this.getAssigned(content)
         let entries = []
         assigned.forEach(entry => {
             let withMarkup = {}

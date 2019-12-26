@@ -59,7 +59,13 @@ _This is italic text_
 
 > Blockquotes can also be nested...
 > > ...by using additional greater-than signs right next to each other...
-> > > ...or with spaces between arrows.
+> > Even multiline
+> > > This one too
+> > > ...with spaces between arrows.
+> > It might be a good idea to test this
+> You never know
+> > It might not work
+> But hey
 
 
 ## Lists
@@ -88,6 +94,10 @@ Start numbering with offset:
 
 57. foo
 1. bar
+  2. bas
+  3. sab
+2. something
+3. something new
 
 
 ## Code
