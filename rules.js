@@ -9,9 +9,7 @@ export default [
             }
         },
         template: (entry) => {
-            return {
-                element: `<${entry.subtype}>${entry.content}</${entry.subtype}>`
-            }
+            return `<${entry.subtype}>${entry.content}<${entry.subtype}>`
         },
         index: 1
     },
@@ -19,32 +17,34 @@ export default [
         regex: /^((?: {2})*)([*+-]) (.*)/gm,
         assign: (match) => {
             return {
-                type: 'unorderedList',
+                type: 'unordered-list',
                 indentation: match[1].length,
                 prefix: match[2],
-                content: match[3],
+                content: match[3]
             }
         },
         template: (entry) => {
-            return {
-                wrapper: 'ul',
-                element: `<li>${entry.content}</li>`
-            }
+            return `<li>${entry.content}</li>`
         },
         index: 0
     },
     {
-        regex: /^(?:> ?)+(.*)/gm,
+        regex: /(?:^>+ .*\n?)+/gm,
         assign: (match) => {
             return {
-                type: 'quote',
-                content: match[1],
+                type: 'quote-block',
+                content: match[0],
             }
         },
         template: (entry) => {
-            return {
-                element: `<blockquote>${entry.content}</blockquote>`
+            
+            while (entry.content.match(/^> /gm)) {
+                entry.content = entry.content.replace(/^> /gm, '')
             }
+            
+            entry.content.replace(/\n$/g, '')
+
+            return `<blockquote>${entry.content}</blockquote>`
         },
         index: 2
     }
