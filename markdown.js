@@ -92,12 +92,14 @@ Ordered
 
 Start numbering with offset:
 
-57. foo
+5. hello
 1. bar
   2. bas
   3. sab
-2. something
-3. something new
+2. something 1 
+  3. something new2
+    3. something new3 
+    3. something new4
 
 
 ## Code
